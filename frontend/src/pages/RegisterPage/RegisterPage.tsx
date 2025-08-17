@@ -47,7 +47,6 @@ const RegisterPage = () => {
                   />
                 </div>
               </div>
-
               <ErrorsContainer errors={errors} touched={touched} />
             </Form>
           );
