@@ -8,7 +8,7 @@ import { Input } from "@chakra-ui/react";
 import { PasswordInput } from "@/components/ui/password-input";
 import FormFieldContainer from "@/components/ui/forms/FormFieldWrapper";
 import AuthFormWrapper from "@/components/auth/AuthFormWrapper";
-import { getUserByEmail } from "@/utils/api/getUserByEmail";
+// import { getUserByEmail } from "@/utils/api/getUserByEmail";
 import { USER_EXISTS } from "@/utils/constants/validationErrors";
 
 const RegisterPage = () => {
