@@ -1,4 +1,4 @@
-import withAuth from "@/components/withAuth/withAuth";
+import withAuth from "@/components/withAuth";
 import { useGetSingleQuizQuery } from "@/features/quizes/quizesApi";
 import { useParams } from "react-router";
 

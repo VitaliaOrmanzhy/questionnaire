@@ -1,11 +1,13 @@
-import type { RegisterFormValues, UserInfo } from "@/types/auth";
+import type { LoginFormValues, RegisterFormValues } from "@/types/auth";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import instance from "../instance";
+import type { UserInfo } from "@/types/user";
 
-const registerUser = createAsyncThunk<UserInfo, RegisterFormValues>(
+export const registerUser = createAsyncThunk<UserInfo, RegisterFormValues>(
     "auth/registerUser",
     async (formData, { rejectWithValue }) => {
-        const userInfo = instance.post("/register", formData).then(res => {
+        const userInfo = instance.post("/auth/register", formData)
+            .then(res => {
             console.log(res);
 
             return res.data;
@@ -19,4 +21,13 @@ const registerUser = createAsyncThunk<UserInfo, RegisterFormValues>(
     }
 )
 
-export default registerUser;
+export const loginUser = createAsyncThunk<UserInfo, LoginFormValues>(
+    "auth/loginUser",
+    async (formData) => {
+        const response = instance.post("/auth/login", formData)
+            .then(res => res.data)
+            .then(data => data)
+        
+        return response;
+    }
+)

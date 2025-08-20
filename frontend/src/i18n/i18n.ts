@@ -1,26 +1,22 @@
 import i18next from "i18next";
 import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import translationEN from "@/i18n/translations/en-translation.json";
-import translationUK from "@/i18n/translations/uk-translation.json";
-
-const resources = {
-    en: {
-        translation: translationEN
-    },
-    ua: {
-        translation: translationUK
-    }
-}
+import HttpBackend from 'i18next-http-backend';
 
 i18next
-    .use(LanguageDetector)
+    .use(HttpBackend)
     .use(initReactI18next)
     .init({
+        load: 'languageOnly',
         debug: true,
+        ns: ["auth"],
+        supportedLngs: ['en', 'uk', 'ru'],
         fallbackLng: 'en',
         interpolation: {
             escapeValue: false,
         },
-        resources
+        backend: {
+            loadPath: "/translations/{{lng}}/{{ns}}.json",
+        },
     })
+
+export default i18next;

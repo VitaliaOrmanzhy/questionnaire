@@ -1,5 +1,5 @@
-import registerUser from "@/features/auth/authActions";
-import type { User } from "@/types/auth";
+import { loginUser, registerUser } from "@/features/auth/authActions";
+import type { User } from "@/types/user";
 import { createSlice } from "@reduxjs/toolkit";
 
 type AuthState = {
@@ -25,6 +25,12 @@ const authSlice = createSlice({
         builder.addCase(registerUser.fulfilled, (state, action) => {
             state.isLoading = false;
             state.userInfo = action.payload.userInfo
+        })
+        builder.addCase(loginUser.pending, (state) => {
+            state.isLoading = true;
+        })
+        builder.addCase(loginUser.fulfilled, (state, action) => {
+            state.userInfo = action.payload.userInfo;
         })
     }
 })
