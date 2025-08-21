@@ -14,7 +14,7 @@ const SumbitButtonWrapper = ({
 }: SumbitButtonWrapperProps) => {
   console.log(onClick);
   return (
-    <Flex justifyContent="flex-end" m="2rem 0 2rem 0">
+    <Flex justifyContent="flex-end" m="2rem 0 1rem 0">
       <SubmitButton disabled={disabled} onClick={onClick}>
         {label}
       </SubmitButton>

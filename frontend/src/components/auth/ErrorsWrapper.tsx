@@ -17,7 +17,7 @@ const ErrorsWrapper = ({ errors, touched }: ErrorsWrapperProps) => {
   if (!isOpen) return null;
 
   return (
-    <List.Root mt={2} align="start">
+    <List.Root mt="10px" align="start">
       {errors &&
         touched &&
         Object.keys(errors).map((el) => {
