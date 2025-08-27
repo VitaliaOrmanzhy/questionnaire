@@ -1,5 +1,5 @@
 import { LoginUserDto } from "./LoginUser.dto";
 
-export type RegisterUserDto = LoginUserDto & {
+export interface RegisterUserDto extends LoginUserDto {
     username: string;
 }

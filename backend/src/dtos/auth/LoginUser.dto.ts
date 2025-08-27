@@ -1,4 +1,4 @@
-export type LoginUserDto = {
+export interface LoginUserDto {
     email: string,
     password: string,
 }
