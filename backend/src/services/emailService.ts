@@ -25,7 +25,6 @@ transporter.verify()
 
 export const sendSimpleEmail = async (mailOptions: IMailOptions) => {
     const info = await transporter.sendMail(mailOptions);
-    console.log(info);
     return info;
 }
 

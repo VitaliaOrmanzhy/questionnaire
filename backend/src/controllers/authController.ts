@@ -2,7 +2,7 @@ import { Transporter } from './../../node_modules/@types/nodemailer/index.d';
 import { Request, Response } from "express";
 import { RegisterUserDto } from "../dtos/auth/RegisterUser.dto";
 import { User } from "../models/user";
-import generateAuthToken from "../utils/generateAuthToken";
+import { generateAuthToken } from "../services/jwt";
 import { LoginUserDto } from "../dtos/auth/LoginUser.dto";
 import { ForgotPasswordDto } from "../dtos/auth/ForgotPassword.dto";
 import "dotenv/config";
@@ -10,6 +10,8 @@ import generateResetPasswordToken from "../utils/generateResetPasswordToken";
 import { sendSimpleEmail } from "../services/emailService";
 import { UserInfoDto } from '../dtos/auth/User.dto';
 import { ChangePasswordDto } from '../dtos/auth/ChangePassword.dto';
+import AppError from '../utils/AppError';
+import { statusCodes } from '../utils/constants';
 
 export const registerUser = async (req: Request<{}, {}, RegisterUserDto>, res: Response<UserInfoDto>) => {
     const { username, email, password } = req.body; 
@@ -79,12 +81,12 @@ export const forgotPassword = async (req: Request<{}, {}, ForgotPasswordDto>, re
         const info = await sendSimpleEmail(mailOptions);
         
         if (info) {
-            return res.status(200);
+            res.send(200)
         } else {
-            return res.status(500);
+            return res.send(500);
         }
     } else {
-        return res.status(401);
+        throw new AppError("User isn't found", statusCodes.NOT_FOUND);
     }
 }
 
@@ -99,6 +101,6 @@ export const changePassword = async (req: Request<ChangePasswordDto>, res: Respo
         await user.save();
         res.send(200);
     } else {
-        res.status(404);
+        throw new AppError("User not found", statusCodes.NOT_FOUND);
     }
 }
