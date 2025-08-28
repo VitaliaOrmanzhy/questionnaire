@@ -11,6 +11,7 @@ export interface IUser {
 // document
 interface IUserDocument extends IUser, Document {
     matchPassword(enteredPassword: string): Promise<boolean>;
+    setResetToken(token: string): void;
 }
 // model
 interface IUserModel extends Model<IUserDocument> {
@@ -19,6 +20,7 @@ interface IUserModel extends Model<IUserDocument> {
 }
 
 const userSchema = new mongoose.Schema<IUserDocument>({
+    _id: Number,
     username: {
         type: String,
         required: true,
@@ -54,6 +56,10 @@ userSchema.methods.matchPassword = async function(enteredPassword: string) {
 userSchema.methods.changePassword = function (newPassword: string) {
     this.password = newPassword;
     return;
+}
+
+userSchema.methods.setResetToken = function (token: string) {
+    this.resetPasswordToken = token;
 }
 
 // for model
