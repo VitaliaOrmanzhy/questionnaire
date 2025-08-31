@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import config from "../config/email";
+import emailConfig from "../config/email";
 
 interface IMailOptions {
     from: string;
@@ -10,12 +10,12 @@ interface IMailOptions {
 }
 
 const transporter = nodemailer.createTransport({
-    host: config.host,
-    port: config.port,
-    secure: config.secure,
+    host: emailConfig.host,
+    port: emailConfig.port,
+    secure: emailConfig.secure,
     auth: {
-        user: config.user,
-        pass: config.pass
+        user: emailConfig.user,
+        pass: emailConfig.pass
     }
 }); 
 

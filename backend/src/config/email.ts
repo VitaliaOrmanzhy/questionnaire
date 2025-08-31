@@ -8,7 +8,7 @@ interface Config {
     pass: string
 }
 
-const config: Config = {
+const emailConfig: Config = {
     host: process.env.EMAIL_HOST!,
     port: parseInt(process.env.EMAIL_PORT as string, 10),
     secure: process.env.EMAIL_SECURE === 'true',
@@ -16,4 +16,4 @@ const config: Config = {
     pass: process.env.EMAIL_PASSWORD!
 }
 
-export default config;
+export default emailConfig;

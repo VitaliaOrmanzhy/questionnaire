@@ -8,12 +8,12 @@ import { ForgotPasswordDto } from "../dtos/auth/ForgotPassword.dto";
 import "dotenv/config";
 import generateResetPasswordToken from "../utils/generateResetPasswordToken";
 import { sendSimpleEmail } from "../services/emailService";
-import { UserInfoDto } from '../dtos/auth/User.dto';
+import { UserResponseDto } from '../dtos/auth/UserResponse.dto';
 import { ChangePasswordDto } from '../dtos/auth/ChangePassword.dto';
 import AppError from '../utils/AppError';
 import { statusCodes } from '../utils/constants';
 
-export const registerUser = async (req: Request<{}, {}, RegisterUserDto>, res: Response<UserInfoDto>) => {
+export const registerUser = async (req: Request<{}, {}, RegisterUserDto>, res: Response<UserResponseDto>) => {
     const { username, email, password } = req.body; 
 
     // whether the user already exists
@@ -39,7 +39,7 @@ export const registerUser = async (req: Request<{}, {}, RegisterUserDto>, res: R
     }
 }
 
-export const loginUser = async (req: Request<{}, {}, LoginUserDto>, res: Response<UserInfoDto>) => {
+export const loginUser = async (req: Request<{}, {}, LoginUserDto>, res: Response<UserResponseDto>) => {
     const { email, password } = req.body;
     // find user by email
     const user = await User.findOne({ email });
@@ -67,7 +67,8 @@ export const forgotPassword = async (req: Request<{}, {}, ForgotPasswordDto>, re
         // generate resetPasswordToken
         const token = generateResetPasswordToken();
         // setting token to user
-        await User.updateOne({ email }, { resetPasswordToken: token });
+        user.setResetToken(token);
+        await user.save();
 
         const mailOptions = {
             from: "Questionnaire",
