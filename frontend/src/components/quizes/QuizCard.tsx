@@ -1,21 +1,30 @@
-import type { Quiz } from "@/types/quiz";
+import type { IQuiz } from "@/types/quiz";
+import { Badge, Card } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router";
+
+type IQuizCardProps = Omit<IQuiz, "authorId">;
 
 const QuizCard = ({
   id,
   title,
   description,
-  completionsCount,
-  questions,
-}: Quiz) => {
+  questionsCount,
+}: IQuizCardProps) => {
+  const { t } = useTranslation("quiz");
   return (
     <NavLink to={`/quizes/${id}`}>
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <div>
-        <p>Completions: {completionsCount}</p>
-        <p>Questions: {questions.length}</p>
-      </div>
+      <Card.Root variant="elevated">
+        <Card.Body>
+          <Card.Title>{title}</Card.Title>
+          <Card.Description>{description}</Card.Description>
+        </Card.Body>
+        <Card.Footer>
+          <Badge>
+            {t("questions-count-label")}: {questionsCount}
+          </Badge>
+        </Card.Footer>
+      </Card.Root>
     </NavLink>
   );
 };

@@ -15,7 +15,7 @@ import ErrorsWrapper from "@/components/auth/ErrorsWrapper";
 import AuthLink from "@/components/auth/AuthLink";
 import useAuth from "@/hooks/useAuth";
 
-const RegisterPage = () => {
+const RegisterForm = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation("auth");
 
@@ -109,4 +109,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default RegisterForm;

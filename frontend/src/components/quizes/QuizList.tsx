@@ -1,21 +1,20 @@
-import type { Quiz } from "@/types/quiz";
+import type { IQuiz } from "@/types/quiz";
 import QuizCard from "./QuizCard";
 
-interface QuizListProps {
-  quizes: Quiz[];
+interface IQuizListProps {
+  quizes: IQuiz[];
 }
 
-const QuizList = ({ quizes }: QuizListProps) => {
+const QuizList = ({ quizes }: IQuizListProps) => {
   return (
     <div>
-      {quizes.map(({ id, title, description, completionsCount, questions }) => (
+      {quizes.map(({ id, title, description, questionsCount }) => (
         <QuizCard
           key={id}
           id={id}
           title={title}
           description={description}
-          completionsCount={completionsCount}
-          questions={questions}
+          questionsCount={questionsCount}
         />
       ))}
     </div>

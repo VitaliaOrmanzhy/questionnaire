@@ -1,8 +1,8 @@
-import { Field, Form, Formik } from "formik";
-import type { LoginFormValues } from "@/types/auth";
-import loginSchema from "@/schemas/loginSchema";
 import { useAppDispatch } from "@/hooks/hooks";
 import { useTranslation } from "react-i18next";
+import type { LoginFormValues } from "@/types/auth";
+import { Field, Form, Formik } from "formik";
+import loginSchema from "@/schemas/loginSchema";
 import { loginUser } from "@/features/auth/authActions";
 import AuthFormWrapper from "@/components/auth/AuthFormWrapper";
 import FormFieldWrapper from "@/components/ui/forms/FormFieldWrapper";
@@ -12,11 +12,10 @@ import ErrorsWrapper from "@/components/auth/ErrorsWrapper";
 import SubmitButtonWrapper from "@/components/ui/forms/SubmitButtonWrapper";
 import AuthLink from "@/components/auth/AuthLink";
 
-const LoginPage = () => {
+const LoginForm = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation("auth");
   const initialValues: LoginFormValues = { email: "", password: "" };
-
   return (
     <Formik
       initialValues={initialValues}
@@ -75,4 +74,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default LoginForm;

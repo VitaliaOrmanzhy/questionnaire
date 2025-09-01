@@ -1,21 +1,31 @@
-export type Answer = {
-    id: string;
-    title: string;
-    isCorrect: boolean;
+export interface IOption {
+  id: string;
+  title: string;
 }
 
-export type Question = {
-    id: string;
-    title: string;
-    answers: Answer[]
+export interface IQuestion {
+  id: string;
+  title: string;
+  optionId: string;
 }
 
-export type Quiz = {
-    id: string;
-    title: string;
-    description: string;
-    completionsCount: number;
-    questions: Question[]
+export interface IQuiz {
+  id: string;
+  title: string;
+  description: string;
+  authorId: string;
+  questionsCount: number;
 }
 
-export type QuizQuery = Partial<Pick<Quiz, "title" | "completionsCount">>;
+interface ICreateOption {
+  title: string;
+}
+
+interface ICreateQuestion extends Omit<IQuestion, "id"> {
+  options: ICreateOption[];
+}
+
+export interface ICreateQuiz
+  extends Omit<IQuiz, "id" | "questions" | "completionsCount"> {
+  questions: ICreateQuestion[];
+}

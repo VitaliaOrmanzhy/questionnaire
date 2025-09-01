@@ -8,7 +8,7 @@ interface AuthLinkProps {
 
 const AuthLink = ({ label, linkLabel, href }: AuthLinkProps) => {
   return (
-    <Flex justifyContent="center" mt="2rem" pb="10px" fontSize="14px">
+    <Flex justifyContent="center" mt="2rem" fontSize="14px">
       <Text>
         {label}
         <Link variant="plain" ml="5px" href={href}>

@@ -4,9 +4,10 @@ import { useParams } from "react-router";
 
 const QuizStartPage = () => {
   const { id } = useParams();
-  const numericId = id ? +id : undefined;
 
-  const { data, isLoading, error } = useGetSingleQuizQuery(numericId);
+  const { data, isLoading, error } = useGetSingleQuizQuery(id as string, {
+    skip: !id,
+  });
   console.log(error);
 
   return (
