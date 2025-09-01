@@ -29,3 +29,8 @@ export interface ICreateQuiz
   extends Omit<IQuiz, "id" | "questions" | "completionsCount"> {
   questions: ICreateQuestion[];
 }
+
+export interface IQuizQueryParams {
+  q: string | null;
+  limit?: number;
+}

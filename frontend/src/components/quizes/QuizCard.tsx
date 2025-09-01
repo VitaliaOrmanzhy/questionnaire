@@ -17,7 +17,11 @@ const QuizCard = ({
       <Card.Root variant="elevated">
         <Card.Body>
           <Card.Title>{title}</Card.Title>
-          <Card.Description>{description}</Card.Description>
+          <Card.Description>
+            {description.length > 50
+              ? description.substring(0, 20) + "..."
+              : description}
+          </Card.Description>
         </Card.Body>
         <Card.Footer>
           <Badge>
