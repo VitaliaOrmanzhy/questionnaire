@@ -3,7 +3,7 @@ import { QuizResponseDto } from "../dtos/quizes/QuizResponse.dto";
 import { Quiz } from "../models/quiz";
 
 export class QuizService {
-  static async getQuizes(
+  static async getQuizzesData(
     startIndex: number,
     limit: number,
     q?: string
@@ -32,8 +32,8 @@ export class QuizService {
     }));
   }
 
-  static async getQuiz(id: string): Promise<QuizResponseDto | null> {
-    return await Quiz.findOne({ _id: id }).select(
+  static async getQuizData(id: string): Promise<QuizResponseDto | null> {
+    return await Quiz.findById(id).select(
       "title description authorId completionsCount"
     );
   }

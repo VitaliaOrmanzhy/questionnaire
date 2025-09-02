@@ -6,8 +6,9 @@ import { IIdParam } from "../types/params";
 import AppError from "../utils/AppError";
 import { CreateQuizDto } from "../dtos/quizes/CreateQuiz.dto";
 import { QuizService } from "../services/quizService";
+import { IAuthenticateRequest } from "../types/request";
 
-export const getAllQuizes = async (
+export const getAllQuizzes = async (
   req: Request<{}, {}, {}, IGetAllQuizesQuery>,
   res: Response<QuizResponseDto[]>
 ) => {
@@ -17,7 +18,7 @@ export const getAllQuizes = async (
 
   const startIndex = (page - 1) * limit;
 
-  const quizes = await QuizService.getQuizes(startIndex, limit, q);
+  const quizes = await QuizService.getQuizzesData(startIndex, limit, q);
   res.status(200).send(quizes);
 };
 
@@ -27,7 +28,7 @@ export const getSingleQuiz = async (
 ) => {
   const { id } = req.params;
 
-  const quiz = await QuizService.getQuiz(id);
+  const quiz = await QuizService.getQuizData(id);
 
   if (quiz) {
     res.status(200).send(quiz);
@@ -37,10 +38,11 @@ export const getSingleQuiz = async (
 };
 
 export const createQuiz = async (
-  req: Request<{}, {}, CreateQuizDto>,
+  req: IAuthenticateRequest<{}, CreateQuizDto>,
   res: Response<QuizResponseDto>
 ) => {
-  const { title, description, questions, authorId } = req.body;
+  const authorId = req.user?._id as string;
+  const { title, description, questions } = req.body;
 
   const quiz = await QuizService.createQuiz({
     title,

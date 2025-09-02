@@ -1,28 +1,38 @@
-import { NextFunction, Request, Response } from "express";
+import { UserService } from "./../services/userService";
+import { NextFunction, Response } from "express";
 import AppError from "../utils/AppError";
 import { statusCodes } from "../utils/constants";
 import { decodeAuthToken } from "../services/jwt";
-import { JwtPayload } from "jsonwebtoken";
+import { IAuthenticateRequest } from "../types/request";
+import { IUserDocument, User } from "../models/user";
 
-interface AuthRequest extends Request {
-    userId?: string | JwtPayload;
-}
+const authMiddleware = async (
+  req: IAuthenticateRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { authorization } = req.headers;
+  const token = authorization?.split(" ")[1];
 
-const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
-    const { authorization } = req.headers;
-    const token = authorization?.split(" ")[1];
+  if (token) {
+    const decoded = decodeAuthToken(token) as { [key: string]: string };
+    if (decoded.id) {
+      // find User by id
+      const user = (await UserService.findUserById(
+        decoded.id
+      )) as IUserDocument;
 
-    if (token) {
-        const decoded = decodeAuthToken(token);
-        if (decoded) {
-            req.userId = decoded;
-            next()
-        } else {
-            throw new AppError('INVALID_TOKEN', statusCodes.UNAUTHORIZED);
-        }
+      if (user) {
+        req.user = user;
+      }
+
+      next();
     } else {
-        throw new AppError("Unauthorized", statusCodes.UNAUTHORIZED);
+      throw new AppError("INVALID_TOKEN", statusCodes.UNAUTHORIZED);
     }
-}
+  } else {
+    throw new AppError("Unauthorized", statusCodes.UNAUTHORIZED);
+  }
+};
 
 export default authMiddleware;

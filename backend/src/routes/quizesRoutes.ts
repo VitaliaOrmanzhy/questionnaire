@@ -1,11 +1,16 @@
 import { Router } from "express";
-import { createQuiz, getAllQuizes, getSingleQuiz } from "../controllers/quizesController";
+import {
+  createQuiz,
+  getAllQuizzes,
+  getSingleQuiz,
+} from "../controllers/quizesController";
 import authMiddleware from "../middlewares/authMiddleware";
 
-const quizesRouter = Router();
+const quizzesRouter = Router();
 
-quizesRouter.get("/", getAllQuizes);
-quizesRouter.get("/:id", getSingleQuiz);
-quizesRouter.post("/create", authMiddleware, createQuiz);
+quizzesRouter.get("/", getAllQuizzes);
+quizzesRouter.get("/:id", getSingleQuiz);
+quizzesRouter.post("/create", authMiddleware, createQuiz);
+quizzesRouter;
 
-export default quizesRouter;
+export default quizzesRouter;
