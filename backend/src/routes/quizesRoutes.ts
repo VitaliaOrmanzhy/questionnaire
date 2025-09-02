@@ -3,7 +3,7 @@ import {
   createQuiz,
   getAllQuizzes,
   getSingleQuiz,
-} from "../controllers/quizesController";
+} from "../controllers/quizzesController";
 import authMiddleware from "../middlewares/authMiddleware";
 
 const quizzesRouter = Router();

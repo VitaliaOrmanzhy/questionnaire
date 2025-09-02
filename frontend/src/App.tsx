@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import "@/App.css";
-import RegisterPage from "@/pages/RegisterPage/RegisterPage";
-import LoginPage from "@/pages/LoginPage/LoginPage";
+import RegisterPage from "@/pages/RegisterPage";
+import LoginPage from "@/pages/LoginPage";
 import MainLayout from "@/components/layouts/MainLayout";
-import QuizStartPageWithAuth from "./pages/QuizStartPage/QuizStartPage";
-import MainPage from "./pages/MainPage/MainPage";
+import QuizStartPageWithAuth from "./pages/QuizStartPage";
+import MainPage from "./pages/MainPage";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 
