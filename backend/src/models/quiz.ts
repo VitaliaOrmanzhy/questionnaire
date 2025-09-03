@@ -52,17 +52,22 @@ const questionSchema = new mongoose.Schema<IQuestion>({
   options: [optionSchema],
 });
 
-const completionSchema = new mongoose.Schema<ICompletion>({
-  milliseconds: {
-    type: Number,
-    required: true,
+const completionSchema = new mongoose.Schema<ICompletion>(
+  {
+    milliseconds: {
+      type: Number,
+      required: true,
+    },
+    score: {
+      type: Number,
+      required: true,
+    },
+    completorId: Schema.Types.ObjectId,
   },
-  score: {
-    type: Number,
-    required: true,
-  },
-  completorId: Schema.Types.ObjectId,
-});
+  {
+    timestamps: true,
+  }
+);
 
 const quizSchema = new mongoose.Schema<IQuiz, Model<IQuiz>, IQuizMethods>(
   {
