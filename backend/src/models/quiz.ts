@@ -1,9 +1,20 @@
-import mongoose, { Model, Document, Schema, Types } from "mongoose";
+import mongoose, {
+  Model,
+  Document,
+  Schema,
+  Types,
+  PopulatedDoc,
+} from "mongoose";
+import { IUserDocument } from "./user";
 
 export interface IOption {
   title: string;
   selectionsCount: number;
   isCorrect: boolean;
+}
+
+interface IOptionDocument extends IOption, Document {
+  _id: Types.ObjectId;
 }
 
 export interface IQuestion {
@@ -12,27 +23,44 @@ export interface IQuestion {
   options: IOption[];
 }
 
+interface IQuestionDocument extends IQuestion, Document {
+  options: Types.DocumentArray<IOptionDocument>;
+}
+
 export interface ICompletion {
   milliseconds: number;
   score: number;
-  completorId: Types.ObjectId;
+  completor: PopulatedDoc<Types.ObjectId & IUserDocument>;
+}
+
+interface ICompletionDocument extends ICompletion, Document {
+  _id: Types.ObjectId;
 }
 
 export interface IQuiz {
   title: string;
   description: string;
   questions: IQuestion[];
-  authorId: Types.ObjectId;
+  author: PopulatedDoc<Types.ObjectId & IUserDocument>;
   completions: ICompletion[];
 }
 
-export interface IQuizMethods {
+interface IQuizDocument extends IQuiz, Document {
+  _id: Types.ObjectId;
+  questions: Types.DocumentArray<IQuestionDocument>;
+  completions: Types.DocumentArray<ICompletionDocument>;
   getQuestionsCount(): number;
   getCompletionsCount(): number;
   getAverageCompletionTime(): number;
 }
 
-const optionSchema = new mongoose.Schema<IOption>({
+// export interface IQuizMethods {
+//   getQuestionsCount(): number;
+//   getCompletionsCount(): number;
+//   getAverageCompletionTime(): number;
+// }
+
+const optionSchema = new mongoose.Schema<IOptionDocument>({
   title: {
     type: String,
     required: true,
@@ -44,7 +72,7 @@ const optionSchema = new mongoose.Schema<IOption>({
   },
 });
 
-const questionSchema = new mongoose.Schema<IQuestion>({
+const questionSchema = new mongoose.Schema<IQuestionDocument>({
   title: {
     type: String,
     required: true,
@@ -52,7 +80,7 @@ const questionSchema = new mongoose.Schema<IQuestion>({
   options: [optionSchema],
 });
 
-const completionSchema = new mongoose.Schema<ICompletion>(
+const completionSchema = new mongoose.Schema<ICompletionDocument>(
   {
     milliseconds: {
       type: Number,
@@ -62,14 +90,22 @@ const completionSchema = new mongoose.Schema<ICompletion>(
       type: Number,
       required: true,
     },
-    completorId: Schema.Types.ObjectId,
+    completor: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const quizSchema = new mongoose.Schema<IQuiz, Model<IQuiz>, IQuizMethods>(
+const quizSchema = new mongoose.Schema<
+  IQuizDocument,
+  Model<IQuizDocument>
+  //   IQuizMethods
+>(
   {
     title: {
       type: String,
@@ -80,7 +116,7 @@ const quizSchema = new mongoose.Schema<IQuiz, Model<IQuiz>, IQuizMethods>(
       required: true,
     },
     questions: [questionSchema],
-    authorId: {
+    author: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -95,18 +131,21 @@ const quizSchema = new mongoose.Schema<IQuiz, Model<IQuiz>, IQuizMethods>(
   }
 );
 
-quizSchema.methods.getQuestionsCount = function () {
+quizSchema.methods.getQuestionsCount = function (this: IQuizDocument) {
   return this.questions.length;
 };
 
-quizSchema.methods.getCompletionsCount = function () {
+quizSchema.methods.getCompletionsCount = function (this: IQuizDocument) {
   return this.completions.length;
 };
 
-quizSchema.methods.getAverageCompletionTime = function () {
+quizSchema.methods.getAverageCompletionTime = function (this: IQuizDocument) {
   return this.completions.reduce((acc, el, _, arr) => {
     return acc + el.milliseconds / arr.length;
   }, 0);
 };
 
-export const Quiz = mongoose.model("Quiz", quizSchema);
+export const Quiz = mongoose.model<IQuizDocument, Model<IQuizDocument>>(
+  "Quiz",
+  quizSchema
+);

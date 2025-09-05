@@ -7,6 +7,7 @@ import AppError from "../utils/AppError";
 import { CreateQuizDto } from "../dtos/quizes/CreateQuiz.dto";
 import { QuizService } from "../services/quizService";
 import { IAuthenticateRequest } from "../types/request";
+import { QuizStatisticsResponseDto } from "../dtos/quizes/QuizStatisticsResponse.dto";
 
 export const getAllQuizzes = async (
   req: Request<{}, {}, {}, IGetAllQuizesQuery>,
@@ -55,5 +56,21 @@ export const createQuiz = async (
     res.status(201).send(quiz);
   } else {
     throw new AppError("Quiz creation failed", 500);
+  }
+};
+
+export const getQuizStatistics = async (
+  req: Request<IIdParam>,
+  res: Response<QuizStatisticsResponseDto>
+) => {
+  const { id } = req.params;
+
+  if (id) {
+    const quizStatistics = await QuizService.getQuizStatisticsData(id);
+    if (!quizStatistics) {
+      throw new AppError("Couldn't find quiz statistics", 404);
+      return;
+    }
+    res.status(200).send(quizStatistics);
   }
 };

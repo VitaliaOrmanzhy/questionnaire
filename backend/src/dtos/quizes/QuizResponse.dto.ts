@@ -1,7 +1,10 @@
 export interface QuizResponseDto {
-  _id: string;
+  id: string;
   title: string;
   description: string;
-  authorId: string;
+  author: {
+    id: string;
+    username: string;
+  };
   questionsCount: number;
 }

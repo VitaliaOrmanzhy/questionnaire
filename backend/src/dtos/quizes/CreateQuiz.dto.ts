@@ -4,5 +4,4 @@ export interface CreateQuizDto {
   title: string;
   description: string;
   questions: CreateQuestionDto[];
-  authorId?: string;
 }
