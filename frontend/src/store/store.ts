@@ -1,16 +1,18 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import { authReducer } from '../features/auth/authSlice'
-import { quizesApi } from '@/features/quizes/quizesApi';
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import authReducer from "./slices/authSlice";
+import { baseApi } from "@/store/api/baseApi";
+import quizReducer from "./slices/quizSlice";
 
 const reducer = combineReducers({
-    auth: authReducer,
-    [quizesApi.reducerPath]: quizesApi.reducer,
+  auth: authReducer,
+  quiz: quizReducer,
+  [baseApi.reducerPath]: baseApi.reducer,
 });
 
 export const store = configureStore({
-    reducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(quizesApi.middleware)
+  reducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(baseApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

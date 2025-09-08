@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { LoginFormValues } from "@/types/auth";
 import { Field, Form, Formik } from "formik";
 import loginSchema from "@/schemas/loginSchema";
-import { loginUser } from "@/features/auth/authActions";
+import { loginUser } from "@/store/api/authActions";
 import AuthFormWrapper from "@/components/auth/AuthFormWrapper";
 import FormFieldWrapper from "@/components/ui/forms/FormFieldWrapper";
 import { Input, Stack } from "@chakra-ui/react";

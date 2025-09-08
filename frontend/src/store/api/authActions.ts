@@ -1,6 +1,6 @@
 import type { LoginFormValues, RegisterFormValues } from "@/types/auth";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import instance from "../instance";
+import instance from "../../features/instance";
 import type { UserInfo } from "@/types/user";
 
 export const registerUser = createAsyncThunk<UserInfo, RegisterFormValues>(

@@ -3,7 +3,7 @@ import { Badge, Card } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router";
 
-type IQuizCardProps = Omit<IQuiz, "authorId">;
+type IQuizCardProps = Omit<IQuiz, "author">;
 
 const QuizCard = ({
   id,

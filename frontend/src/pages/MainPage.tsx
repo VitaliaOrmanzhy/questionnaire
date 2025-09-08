@@ -1,7 +1,7 @@
 import QuizList from "@/components/quizes/QuizList";
 import CustomSpinner from "@/components/ui/CustomSpinner";
 import SearchInput from "@/components/ui/SearchInput";
-import { useGetAllQuizesInfiniteQuery } from "@/features/quizes/quizesApi";
+import { useGetAllQuizesInfiniteQuery } from "@/store/api/quizesApi";
 import { PAGE_LIMIT } from "@/utils/constants/constants";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";

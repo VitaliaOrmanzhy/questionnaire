@@ -1,10 +1,14 @@
-import type { ICreateQuiz, IQuiz, IQuizQueryParams } from "@/types/quiz";
+import {
+  type IQuizStatistics,
+  type ICreateQuiz,
+  type IQuiz,
+  type IQuizQueryParams,
+  type TQuestion,
+} from "@/types/quiz";
 import createQueryStr from "@/utils/helpers/createQueryStr";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseApi } from "./baseApi";
 
-export const quizesApi = createApi({
-  reducerPath: "quizes",
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.REACT_APP_API_URL }),
+export const quizesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllQuizes: builder.infiniteQuery<IQuiz[], IQuizQueryParams, number>({
       infiniteQueryOptions: {
@@ -22,9 +26,11 @@ export const quizesApi = createApi({
       },
       query: ({ queryArg, pageParam }) =>
         `/quizes?${createQueryStr({ q: queryArg.q, page: pageParam })}`,
+      providesTags: ["Quizzes"],
     }),
     getSingleQuiz: builder.query<IQuiz, string>({
       query: (id) => `/quizes/${id}`,
+      providesTags: ["Quizzes"],
     }),
     createQuiz: builder.mutation<void, ICreateQuiz>({
       query: (body) => ({
@@ -32,9 +38,21 @@ export const quizesApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Quizzes"],
+    }),
+    getQuizStatistics: builder.query<IQuizStatistics, string>({
+      query: (id) => `/quizes/${id}/statistics`,
+      providesTags: ["Quizzes"],
+    }),
+    getQuestions: builder.query<TQuestion[], string>({
+      query: (id) => `/quizes/${id}/questions`,
     }),
   }),
 });
 
-export const { useGetAllQuizesInfiniteQuery, useGetSingleQuizQuery } =
-  quizesApi;
+export const {
+  useGetAllQuizesInfiniteQuery,
+  useGetSingleQuizQuery,
+  useGetQuizStatisticsQuery,
+  useGetQuestionsQuery,
+} = quizesApi;

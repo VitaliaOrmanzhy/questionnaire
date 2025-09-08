@@ -1,7 +1,7 @@
 import { Field, Form, Formik } from "formik";
 import registerSchema from "@/schemas/registerSchema";
 import type { Errors, RegisterFormValues } from "@/types/auth";
-import { registerUser } from "@/features/auth/authActions";
+import { registerUser } from "@/store/api/authActions";
 import { useAppDispatch } from "@/hooks/hooks";
 import { useTranslation } from "react-i18next";
 import { Input, Stack } from "@chakra-ui/react";
