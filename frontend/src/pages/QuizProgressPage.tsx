@@ -1,12 +1,13 @@
 import { useGetQuestionsQuery } from "@/store/api/quizesApi";
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useParams } from "react-router";
 import ProgressBar from "@/components/ui/ProgressBar";
-import SubmitButton from "@/components/ui/forms/SubmitButton";
-import { useAppDispatch } from "@/hooks/hooks";
-import { answerQuestion } from "@/store/slices/quizSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { answerQuestion, startQuiz } from "@/store/slices/quizSlice";
 import CustomSpinner from "@/components/ui/CustomSpinner";
-import Question from "@/components/quizes/Question";
+import Question from "@/components/questions/QuestionContainer";
+import { useEffect } from "react";
+import type { TAnswerPayload } from "@/types/answer";
 
 const QuizProgressPage = () => {
   const dispatch = useAppDispatch();
@@ -14,21 +15,45 @@ const QuizProgressPage = () => {
   const idString = id as string;
 
   const { data, isLoading, error } = useGetQuestionsQuery(idString);
-  // const questionsCount = data?.length;
-  const currQuestionIdx = 0;
-  const currQuestion = data?.[currQuestionIdx];
 
-  const handleNext = (questionId: string, optionsIds: string[]) => {
-    dispatch(answerQuestion({ questionId, optionsIds }));
+  useEffect(() => {
+    if (data) {
+      dispatch(startQuiz(idString));
+    }
+    // localStorage.get("currQuiz");
+  }, [dispatch, data, idString]);
+  let currQuestionIdx = 0;
+
+  const { answers } = useAppSelector((state) => state.quiz);
+  //global answer from state
+  const currAnswer = answers.find((el) => (el.questionId = idString));
+
+  //!!!
+  const handleChange = (answer: TAnswerPayload) => {
+    if (data) {
+      dispatch(answerQuestion(answer));
+    }
+  };
+
+  const handleNext = () => {
+    currQuestionIdx++;
   };
 
   return (
     <Box>
       <ProgressBar label="Progress" value={40} />
       {isLoading && <CustomSpinner />}
-      {!isLoading && !currQuestion && <p>Error</p>}
-      {currQuestion && <Question question={currQuestion} />}
-      <SubmitButton onClick={}>Next</SubmitButton>
+      {!isLoading && !data && <p>Error</p>}
+      {data && (
+        <>
+          <Question
+            question={data?.[currQuestionIdx]}
+            initialState={currAnswer}
+            onChange={handleChange}
+          />
+          <Button onClick={handleNext}>Next</Button>
+        </>
+      )}
     </Box>
   );
 };
